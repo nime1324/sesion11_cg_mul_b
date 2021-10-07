@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+    <html>
+    <head>
+    <meta charset = "utf-8"/>
+    <style>
+    body {
+        background - color: #ffffff;
+        margin: 0;
+        overflow: hidden;
+    } </style> </head>
+    <body>
+<!--- https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js -->
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.min.js"> </script>
+<script>
+var camera, scene, renderer;
+var geometry, material, mesh;
+var clock;
+
+function cubo(x, y, z, px, py, pz, material, color, wf) {
+	geometry = new THREE.CubeGeometry(x, y, z);
+    switch(material) {
+    	case 'Basic': material = new THREE.MeshBasicMaterial({color: color, wireframe: wf}); break;
+    	case 'Standard': material = new THREE.MeshStandardMaterial({color: color, wireframe: wf}); break;
+    	case 'Physical': material = new THREE.MesPhysicalMaterial({color: color, wireframe: wf}); break;
+    	case 'Phong': material = new THREE.MeshPhongMaterial({color: color, wireframe: wf}); break;
+    	case 'Lambert': material = new THREE.MeshLambertMaterial({color: color, wireframe: wf}); break;
+    }
+    cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    cube.position.set(px, py, pz);
+
+    return cube;
+}
+
+
+function init() {
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    scene = new THREE.Scene();
+    var arrCube = [];
+    
+
+    var t = 2.2;
+
+    for (var i = 0; i < 3; i++) {// el for cse encargara de realizar cada uno de los parametros, como se le asigno un limite de tres repetira los parametros hasta que llegue a ese valor 
+        d = t * 1.05;
+        r = Math.PI/2;
+        arrCube.push(cubo(t, t, t, 0, 0, 0, 'Basic',((i==0) ? 'red':(i==1) ? 'green':'blue'),false));// se crea el cubo con los parametros asignados 
+        arrCube[i].geometry.translate(0+i*t,0+i*t,0)// se multiplican las dimensiones de los cubos y a medida que pasa el ciclo los cubos iran cambiando de posicion
+
+    }
+
+    const axesHelper = new THREE.AxesHelper(30);
+    scene.add(axesHelper);
+
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(10, 10, 10);
+    camera.lookAt(0,0,0);
+    clock = new THREE.Clock();
+    window.addEventListener('resize', onWindowResize, false);
+
+}
+
+var dir = 1;
+
+function animate() {
+    requestAnimationFrame(animate);
+    var delta = clock.getDelta();
+    mesh.rotation.x += delta * 0.5;
+    mesh.rotation.y += delta * 2;
+    mesh.position.x += dir * delta;
+
+    if (mesh.position.x > 2) {
+        dir = -1;
+    } else if (mesh.position.x < -2) {
+        dir = 1;
+    }
+    renderer.render(scene, camera);
+}
+
+function onWindowResize() {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+init();
+renderer.render(scene, camera);
+//animate();
+</script>
+</body>
+</html>
