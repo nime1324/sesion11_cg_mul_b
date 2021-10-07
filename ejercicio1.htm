@@ -42,8 +42,9 @@ function init() {
     
 
     var t = 2.2;
+    var cubos = 6; // se creo la variable cubos para asignar la cantidad de cubos que se quierren crear
 
-    for (var i = 0; i < 3; i++) {// el for cse encargara de realizar cada uno de los parametros, como se le asigno un limite de tres repetira los parametros hasta que llegue a ese valor 
+    for (var i = 0; i < cubos; i++) {// el for cse encargara de realizar cada uno de los parametros, y repetirlos con las condiciones hasta cierta cantidad, en este caso como se quieren crear 6 cubos la variable cubos se encargar ade darle ese valor al ciclo
         d = t * 1.05;
         r = Math.PI/2;
         arrCube.push(cubo(t, t, t, 0, 0, 0, 'Basic',((i==0) ? 'red':(i==1) ? 'green':'blue'),false));// se crea el cubo con los parametros asignados 
